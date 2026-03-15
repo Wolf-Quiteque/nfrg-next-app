@@ -27,6 +27,9 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
+
+// lkjlkjjljlj
+
 const STATIC_LISTINGS = [
   {
     _id: 's1', title: '1406 Fairview Ave', address: '1406 Fairview Ave, Houston, TX 77006',
