@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import EditableText from '../components/EditableText'
 import EditableImage from '../components/EditableImage'
 
+const SCHEDULING_URL = 'https://scheduler.zoom.us/james-scott-36jp9b/interested-in-joining-';
+
 const playScript = `(function () {
             var iframe = document.getElementById("nfrgIntroIframe");
             var videoBlock = document.getElementById("nfrgIntroVideoBlock");
@@ -2920,6 +2922,22 @@ export default function Home() {
                         </div>
                     </a>
                 </div>
+                <div className="nfrg-why-schedule wow fadeInUp" data-wow-delay=".3s">
+                    <div>
+                        <div className="nfrg-why-schedule-kicker">Ready to talk?</div>
+                        <h4>Schedule a 30-minute conversation with James.</h4>
+                    </div>
+                    <a
+                        href={SCHEDULING_URL}
+                        className="tf-btn nfrg-why-schedule-btn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Schedule a 30-minute meeting with James in a new tab"
+                    >
+                        <span className="icon icon-calendar"></span>
+                        Book a Time
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -3349,6 +3367,26 @@ export default function Home() {
                     </div>
                     <div className="col-lg-8">
                         <div className="row g-3">
+                            <div className="col-12">
+                                <div className="box-benefit hover-btn-view contact-card nfrg-schedule-card h-100">
+                                    <div className="icon-box">
+                                        <span className="icon icon-calendar"></span>
+                                    </div>
+                                    <div className="content">
+                                        <h5 className="title"><EditableText contentKey="contact.schedule.title" defaultValue="Schedule a 30-Minute Meeting" /></h5>
+                                        <p className="description mb-0"><EditableText contentKey="contact.schedule.desc" defaultValue="Choose a convenient time to talk through real estate goals, agent support, or mentorship fit." /></p>
+                                    </div>
+                                    <a
+                                        href={SCHEDULING_URL}
+                                        className="tf-btn primary nfrg-schedule-card-btn"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Schedule a 30-minute meeting with James in a new tab"
+                                    >
+                                        Book a Time
+                                    </a>
+                                </div>
+                            </div>
                             <div className="col-md-6">
                                 <div className="box-benefit hover-btn-view contact-card bg-white h-100">
                                     <div className="icon-box">

@@ -239,6 +239,26 @@ body {
     color: #161e2d !important;
 }
 
+.main-header .inner-header-right .nfrg-header-schedule,
+.mobile-menu .button-mobi-sell .nfrg-mobile-schedule {
+    background-color: #b4861f;
+    border-color: #b4861f;
+    color: #ffffff !important;
+    box-shadow: 0 10px 24px rgba(180, 134, 31, 0.28);
+}
+
+.main-header .inner-header-right .nfrg-header-schedule:hover,
+.mobile-menu .button-mobi-sell .nfrg-mobile-schedule:hover {
+    background-color: #8f6a12;
+    border-color: #8f6a12;
+    transform: translateY(-1px);
+}
+
+.mobile-menu .button-mobi-sell {
+    display: grid;
+    gap: 10px;
+}
+
 .main-header .main-menu .navigation > li > a::before {
     background-color: rgba(255, 255, 255, 0.25);
 }
@@ -516,6 +536,89 @@ body {
     object-fit: cover;
 }
 
+.nfrg-schedule-card {
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff 0%, #fff8e8 100%);
+    border: 1px solid #ead7ab;
+    box-shadow: 0 16px 36px rgba(125, 93, 22, 0.14);
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.nfrg-schedule-card .content {
+    flex: 1;
+    min-width: 0;
+}
+
+.nfrg-schedule-card .icon-box {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: #b4861f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nfrg-schedule-card .icon-box .icon {
+    color: #ffffff;
+    font-size: 30px;
+}
+
+.nfrg-schedule-card-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.nfrg-why-schedule {
+    margin-top: 22px;
+    padding: 18px;
+    border: 1px solid #ead7ab;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 16px 36px rgba(21, 99, 223, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.nfrg-why-schedule-kicker {
+    color: #b4861f;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.nfrg-why-schedule h4 {
+    color: #161e2d;
+    font-size: 20px;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.nfrg-why-schedule-btn {
+    background-color: #b4861f;
+    border-color: #b4861f;
+    color: #ffffff !important;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.nfrg-why-schedule-btn:hover {
+    background-color: #8f6a12;
+    border-color: #8f6a12;
+}
+
+@media (max-width: 1199px) {
+    .header-account .nfrg-header-schedule {
+        min-width: 132px;
+        padding-inline: 16px;
+    }
+}
+
 @media (max-width: 767px) {
     .nfrg-disclosure-card {
         padding: 18px;
@@ -523,6 +626,24 @@ body {
 
     .nfrg-lpt-title {
         font-size: 24px;
+    }
+
+    .nfrg-schedule-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .nfrg-schedule-card-btn {
+        width: 100%;
+    }
+
+    .nfrg-why-schedule {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .nfrg-why-schedule-btn {
+        width: 100%;
     }
 }
 

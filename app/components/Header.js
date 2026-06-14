@@ -1,6 +1,8 @@
 "use client"
 import { useEffect } from 'react'
 
+const SCHEDULING_URL = 'https://scheduler.zoom.us/james-scott-36jp9b/interested-in-joining-'
+
 export default function Header() {
   useEffect(() => {
     const el = document.querySelector('.preload')
@@ -54,8 +56,15 @@ export default function Header() {
                       </div>
                     </div>
                     <div className="inner-header-right header-account">
-                      <a href="/#contact" className="tf-btn btn-line btn-login">
-                        Contact Us
+                      <a
+                        href={SCHEDULING_URL}
+                        className="tf-btn nfrg-header-schedule"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Schedule a 30-minute meeting with James in a new tab"
+                      >
+                        <span className="icon icon-calendar"></span>
+                        Schedule
                       </a>
                       <div className="flat-bt-top">
                         <a className="tf-btn primary" href="https://nfrg-web-app.vercel.app/" target="_blank" rel="noopener noreferrer">
@@ -93,6 +102,16 @@ export default function Header() {
                   </div>
                   <div className="menu-outer"></div>
                   <div className="button-mobi-sell">
+                    <a
+                      className="tf-btn nfrg-mobile-schedule"
+                      href={SCHEDULING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Schedule a 30-minute meeting with James in a new tab"
+                    >
+                      <span className="icon icon-calendar"></span>
+                      Schedule Meeting
+                    </a>
                     <a className="tf-btn primary" href="https://nfrg-web-app.vercel.app/" target="_blank" rel="noopener noreferrer">Join Mentorship</a>
                   </div>
                   <div className="mobi-icon-box">
