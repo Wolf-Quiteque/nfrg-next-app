@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getListings, createListing } from '@/lib/db';
 import { uploadFileToR2 } from '@/lib/r2';
 import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { refreshPublicPages } from '@/lib/revalidate';
 import { cookies } from 'next/headers';
 
 function isAdmin(cookieStore) {
@@ -51,6 +52,7 @@ export async function POST(request) {
       displayOrder: parseInt(formData.get('displayOrder') || '99'),
       active: formData.get('active') === 'true',
     });
+    refreshPublicPages();
     return NextResponse.json(listing, { status: 201 });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });

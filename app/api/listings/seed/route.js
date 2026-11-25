@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getListings, createListing } from '@/lib/db';
 import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { refreshPublicPages } from '@/lib/revalidate';
 import { cookies } from 'next/headers';
 
 const DEFAULT_LISTINGS = [
@@ -60,6 +61,7 @@ export async function POST() {
     for (const listing of DEFAULT_LISTINGS) {
       await createListing(listing);
     }
+    refreshPublicPages();
     return NextResponse.json({ ok: true, seeded: DEFAULT_LISTINGS.length });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });

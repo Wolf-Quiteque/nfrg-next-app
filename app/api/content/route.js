@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getSiteContent, upsertSiteContent } from '@/lib/db';
+import { getSiteContent, getAllSiteContent, upsertSiteContent } from '@/lib/db';
 import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { refreshPublicPages } from '@/lib/revalidate';
 import { cookies } from 'next/headers';
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
+    // ?all=1 returns every value in one response (used by the admin view of the homepage).
+    if (searchParams.get('all') === '1') {
+      return NextResponse.json(await getAllSiteContent());
+    }
     const keysParam = searchParams.get('keys') || '';
     const keys = keysParam.split(',').map(k => k.trim()).filter(Boolean);
     if (keys.length === 0) return NextResponse.json({});
@@ -26,6 +31,7 @@ export async function POST(request) {
     const { key, value, type } = await request.json();
     if (!key) return NextResponse.json({ error: 'key is required' }, { status: 400 });
     await upsertSiteContent(key, value, type || 'text');
+    refreshPublicPages();
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });

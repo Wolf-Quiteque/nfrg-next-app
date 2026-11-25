@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getBlogPost, updateBlogPost, deleteBlogPost } from '@/lib/db';
 import { uploadFileToR2, deleteFileFromR2, keyFromUrl } from '@/lib/r2';
 import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { refreshPublicPages } from '@/lib/revalidate';
 import { cookies } from 'next/headers';
 
 function isAdmin(cookieStore) {
@@ -57,6 +58,7 @@ export async function PUT(request, { params }) {
     }
 
     const updated = await updateBlogPost(id, data);
+    refreshPublicPages();
     return NextResponse.json(updated);
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -75,6 +77,7 @@ export async function DELETE(request, { params }) {
       const key = keyFromUrl(post.image);
       if (key) await deleteFileFromR2(key);
     }
+    refreshPublicPages();
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });

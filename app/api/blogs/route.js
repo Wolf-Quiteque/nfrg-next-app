@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getBlogPosts, createBlogPost } from '@/lib/db';
 import { uploadFileToR2 } from '@/lib/r2';
 import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { refreshPublicPages } from '@/lib/revalidate';
 import { cookies } from 'next/headers';
 
 function isAdmin(cookieStore) {
@@ -58,6 +59,7 @@ export async function POST(request) {
       title, slug, content, excerpt, author, category, date, published,
       image: imageUrl,
     });
+    refreshPublicPages();
     return NextResponse.json(post, { status: 201 });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });

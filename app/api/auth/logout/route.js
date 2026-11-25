@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { COOKIE_NAME } from '@/lib/auth';
+import { ADMIN_FLAG_COOKIE, ADMIN_FLAG_OPTIONS } from '@/lib/adminFlag';
 
 export async function POST() {
   const response = NextResponse.json({ ok: true });
@@ -9,5 +10,6 @@ export async function POST() {
     maxAge: 0,
     path: '/',
   });
+  response.cookies.set(ADMIN_FLAG_COOKIE, '', { ...ADMIN_FLAG_OPTIONS, maxAge: 0 });
   return response;
 }

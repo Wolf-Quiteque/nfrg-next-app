@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { uploadFileToR2 } from '@/lib/r2';
 import { upsertSiteContent } from '@/lib/db';
 import { verifyToken, COOKIE_NAME } from '@/lib/auth';
+import { refreshPublicPages } from '@/lib/revalidate';
 import { cookies } from 'next/headers';
 
 export async function POST(request) {
@@ -28,6 +29,7 @@ export async function POST(request) {
 
     if (contentKey) {
       await upsertSiteContent(contentKey, url, 'image');
+      refreshPublicPages();
     }
 
     return NextResponse.json({ url });
