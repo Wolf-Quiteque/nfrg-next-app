@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import { ADMIN_FLAG_COOKIE, ADMIN_FLAG_OPTIONS } from './lib/adminFlag';
 
 const COOKIE_NAME = 'nfrg_admin_token';
 
@@ -13,7 +14,12 @@ export async function middleware(request) {
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     await jwtVerify(token, secret);
-    return NextResponse.next();
+    const response = NextResponse.next();
+    // Admins who signed in before the flag cookie existed get it on their next /admin visit.
+    if (request.cookies.get(ADMIN_FLAG_COOKIE)?.value !== '1') {
+      response.cookies.set(ADMIN_FLAG_COOKIE, '1', ADMIN_FLAG_OPTIONS);
+    }
+    return response;
   } catch {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }

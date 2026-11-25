@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { EditModeContext } from '../context/EditModeContext';
+import { SiteContentContext } from '../context/SiteContentContext';
 import EditTextModal from './EditTextModal';
 
 export default function EditableText({
@@ -13,19 +14,24 @@ export default function EditableText({
   style,
 }) {
   const { isEditMode } = useContext(EditModeContext);
-  const [value, setValue] = useState(initialValue ?? defaultValue);
+  const siteContent = useContext(SiteContentContext);
+  // Set by saving in the edit modal, or by the standalone fetch below.
+  const [localValue, setLocalValue] = useState(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const hasFetched = useRef(false);
 
+  const value = localValue ?? initialValue ?? siteContent?.[contentKey] ?? defaultValue;
+
+  // Only fetch on its own when the page didn't provide its content (no SiteContentProvider).
   useEffect(() => {
-    if (initialValue !== undefined || hasFetched.current) return;
+    if (siteContent || initialValue !== undefined || hasFetched.current) return;
     hasFetched.current = true;
     fetch(`/api/content?keys=${encodeURIComponent(contentKey)}`)
       .then(r => r.json())
-      .then(data => { if (data[contentKey] !== undefined) setValue(data[contentKey]); })
+      .then(data => { if (data[contentKey] !== undefined) setLocalValue(data[contentKey]); })
       .catch(() => {});
-  }, [contentKey, initialValue]);
+  }, [contentKey, initialValue, siteContent]);
 
   const content = html
     ? <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: value }} />
@@ -78,7 +84,7 @@ export default function EditableText({
           contentKey={contentKey}
           currentValue={value}
           html={html}
-          onSave={newVal => { setValue(newVal); setModalOpen(false); }}
+          onSave={newVal => { setLocalValue(newVal); setModalOpen(false); }}
           onClose={() => setModalOpen(false)}
         />
       )}

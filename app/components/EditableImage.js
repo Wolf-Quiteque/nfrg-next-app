@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { EditModeContext } from '../context/EditModeContext';
+import { SiteContentContext } from '../context/SiteContentContext';
 import EditImageModal from './EditImageModal';
 
 export default function EditableImage({
@@ -13,19 +14,24 @@ export default function EditableImage({
   ...imgProps
 }) {
   const { isEditMode } = useContext(EditModeContext);
-  const [src, setSrc] = useState(initialValue ?? defaultSrc);
+  const siteContent = useContext(SiteContentContext);
+  // Set by saving in the edit modal, or by the standalone fetch below.
+  const [localSrc, setLocalSrc] = useState(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const hasFetched = useRef(false);
 
+  const src = localSrc || initialValue || siteContent?.[contentKey] || defaultSrc;
+
+  // Only fetch on its own when the page didn't provide its content (no SiteContentProvider).
   useEffect(() => {
-    if (initialValue !== undefined || hasFetched.current) return;
+    if (siteContent || initialValue !== undefined || hasFetched.current) return;
     hasFetched.current = true;
     fetch(`/api/content?keys=${encodeURIComponent(contentKey)}`)
       .then(r => r.json())
-      .then(data => { if (data[contentKey]) setSrc(data[contentKey]); })
+      .then(data => { if (data[contentKey]) setLocalSrc(data[contentKey]); })
       .catch(() => {});
-  }, [contentKey, initialValue]);
+  }, [contentKey, initialValue, siteContent]);
 
   const img = <img src={src} alt={alt} className={className} style={style} {...imgProps} />;
 
@@ -100,7 +106,7 @@ export default function EditableImage({
         <EditImageModal
           contentKey={contentKey}
           currentSrc={src}
-          onSave={newSrc => { setSrc(newSrc); setModalOpen(false); }}
+          onSave={newSrc => { setLocalSrc(newSrc); setModalOpen(false); }}
           onClose={() => setModalOpen(false)}
         />
       )}

@@ -1,12 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { EditModeContext } from './EditModeContext';
+import { ADMIN_FLAG_COOKIE } from '@/lib/adminFlag';
 
 export function EditModeProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
+    // Only browsers that signed in as admin carry the flag cookie, so visitors skip this call.
+    if (!document.cookie.split('; ').includes(`${ADMIN_FLAG_COOKIE}=1`)) return;
     fetch('/api/auth/check')
       .then(r => r.json())
       .then(data => {

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { signToken, verifyAdminPassword, COOKIE_NAME } from '@/lib/auth';
+import { ADMIN_FLAG_COOKIE, ADMIN_FLAG_OPTIONS } from '@/lib/adminFlag';
 
 export async function POST(request) {
   try {
@@ -22,6 +23,7 @@ export async function POST(request) {
       maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
+    response.cookies.set(ADMIN_FLAG_COOKIE, '1', ADMIN_FLAG_OPTIONS);
     return response;
   } catch {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
